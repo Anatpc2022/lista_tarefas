@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() {
-  runApp(MaterialApp(home: Home()));
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: Home()));
 }
 
 class Home extends StatefulWidget {
@@ -16,7 +16,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List _toDoList = ["Ana Cláudia", "Lanna"];
+  final _todoController = TextEditingController();
+
+  List _toDoList = [];
+
+  void _addTodo() {
+    setState(() {
+      Map<String, dynamic> newTodo = Map();
+      newTodo["title"] = _todoController.text;
+      _todoController.text = "";
+      newTodo["OK"] = false;
+      _toDoList.add(newTodo);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +52,7 @@ class _HomeState extends State<Home> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: TextField(
+                      controller: _todoController,
                       decoration: InputDecoration(
                         hintText: "Nova Tarefa",
                         hintStyle: TextStyle(color: Colors.grey),
@@ -53,7 +66,7 @@ class _HomeState extends State<Home> {
                 SizedBox(
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _addTodo,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueAccent,
                       foregroundColor: Colors.white,
